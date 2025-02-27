@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TicketsCinema.Date;
+using TicketsCinema.Data;
+using TicketsCinema.Repositories;
+using TicketsCinema.Repositories.IRepositories;
 
 namespace TicketsCinema
 {
@@ -10,9 +12,17 @@ namespace TicketsCinema
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            //
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            //ConfigerConnectionString
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            //Repositories
+            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IActorRepository, ActorRepository>();
+            builder.Services.AddScoped<IActorMovieRepository, ActorMovieRepository>();
+
 
             var app = builder.Build();
 
@@ -33,7 +43,7 @@ namespace TicketsCinema
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+                pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

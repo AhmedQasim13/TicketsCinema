@@ -1,10 +1,72 @@
-﻿<div class="container "  >
-    <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
+﻿@using TicketsCinema.Data.Enums
+<head>
+    <style>
+        .card-img-top {
+        height: 300px; /* Fixed image height */
+        object-fit: cover; /* Ensures image covers the area without distortion */
+        }
+
+        .card {
+        height: 100%; /* Ensures all cards have the same height */
+        display: flex;
+        flex-direction: column;
+        }
+
+        .card-body {
+        flex-grow: 1; /* Allows the body to expand and push the button to the bottom */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        }
+
+        .details-btn {
+        margin-top: auto; /* Pushes the button to the bottom */
+        }
+
+        .badge-sale {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        }
+    </style>
+</head>
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    @if (movie.Price > 10 && movie.MovieStatus == MovieStatus.Available)
+                        {
+                        <span class="badge-sale">Hot Sale</span>
+                    }
+                    <img src="~/Images/movies/@movie.ImgUrl" class="card-img-top" alt="Card 1 Image">
+                    <div class="card-body">
+                        <h5 class="card-title ">Title: @movie.Name</h5>
+                        <p class="price"><strong>Price:</strong>: @movie.Price.ToString("C")</p>
+                        <p class="card-info"><strong>Category:</strong> @movie.Category.Name</p>
+                        <p class="card-info"><strong>Start Date:</strong> @movie.StartDate</p>
+                        <p class="card-info"><strong>End Date:</strong> @movie.EndDate</p>
+                        <p class="card-info"><strong>Status:</strong> @movie.MovieStatus</p>
+                        <span class="justify-content-end">
+                            <a href="/Customer/Home/Details?movieId=@movie.Id" class="btn btn-primary">Details</a>
+                            @if (movie.MovieStatus == MovieStatus.Available)
+                            {
+                                <button class="btn btn-danger">Book Ticket</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary" disabled>Book Ticket</button>
+                            }
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>

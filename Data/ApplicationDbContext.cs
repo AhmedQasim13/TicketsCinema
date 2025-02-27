@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TicketsCinema.Models;
 
-namespace TicketsCinema.Date
+namespace TicketsCinema.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -10,14 +10,14 @@ namespace TicketsCinema.Date
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<ActorMovie> ActorMovies { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ActorMovie>().HasKey(e => new { e.ActorId, e.MovieId });
-        }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-        {
         }
 
     }

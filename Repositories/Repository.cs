@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using TicketsCinema.Date;
+using TicketsCinema.Data;
 using TicketsCinema.Repositories.IRepositories;
 
 namespace TicketsCinema.Repositories
@@ -11,8 +11,8 @@ namespace TicketsCinema.Repositories
         private readonly ApplicationDbContext _dbContext;
         public Repository(ApplicationDbContext dbContext)
         {
-            dbSet = _dbContext.Set<T>();
             this._dbContext = dbContext;
+            dbSet = _dbContext.Set<T>();
         }
 
         // CRUD
