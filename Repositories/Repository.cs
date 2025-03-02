@@ -14,7 +14,6 @@ namespace TicketsCinema.Repositories
             this._dbContext = dbContext;
             dbSet = _dbContext.Set<T>();
         }
-
         // CRUD
         public void Create(T entity)
         {

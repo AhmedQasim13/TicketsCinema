@@ -17,8 +17,7 @@ namespace TicketsCinema.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var categories = categoryRepository.Get();
-            //
-            return View(categories.ToList());
+            return View(categories);
         }
 
         [HttpGet]
@@ -26,7 +25,6 @@ namespace TicketsCinema.Areas.Admin.Controllers
         {
             return View(new Category());
         }
-
         [HttpPost]
         public IActionResult Create(Category category)
         {
@@ -44,7 +42,7 @@ namespace TicketsCinema.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit(int categoryId)
         {
-            var category = categoryRepository.GetOne(e => e.Id == categoryId);
+            var category = categoryRepository.GetOne(filter: e => e.Id == categoryId);
             if (category != null)
             {
                 return View(category);
@@ -60,12 +58,8 @@ namespace TicketsCinema.Areas.Admin.Controllers
             {
                 categoryRepository.Edit(category);
                 categoryRepository.Commit();
-
-                TempData["notifation"] = "Category updated successfuly";
-
                 return RedirectToAction(nameof(Index));
             }
-
             return RedirectToAction("Edit");
         }
 

@@ -1,5 +1,98 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model IEnumerable<Cinema>
+
+@section Scripts {
+    @if (TempData["notifation"] != null)
+    {
+        <script>
+            toastr.success('@TempData["notifation"]')
+        </script>
+    }
 }
+
+
+<div class="container my-3">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="display-6 m-0">All Categories</h2>
+                <a href="/Admin/Cinema/Create" class="btn btn-success">
+                    <i class="bi bi-plus-square"></i> Create new category
+                </a>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <table class="table table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">CinemaLogo</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@item.Id</th>
+                                <td>@item.Name </td>
+                                <td>
+                                    <div>
+                                        <img src="~/Images/cinemaLogo/@item.CinemaLogo" alt="Alternate Text" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover;" />
+                                    </div>
+             
+                                </td>
+                                <td>@item.Address</td>
+                                <td>
+                                    <a asp-area="Admin" asp-controller="Cinema" asp-action="Edit" asp-route-cinemaId="@item.Id" class="btn btn-warning rounded me-2">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a href="#" class="btn btn-danger rounded delete-btn" data-bs-toggle="modal"
+                                       data-bs-target="#deleteModal" data-cinema-id="@item.Id">
+                                        <i class="bi bi-trash3-fill"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this category?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="#" id="confirmDelete" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let deleteButtons = document.querySelectorAll(".delete-btn");
+        let confirmDeleteLink = document.getElementById("confirmDelete");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                let cinemaId = this.getAttribute("data-cinema-id");
+                confirmDeleteLink.href = "/Admin/Cinema/Delete?cinemaId=" + cinemaId;
+            });
+        });
+    });
+</script>

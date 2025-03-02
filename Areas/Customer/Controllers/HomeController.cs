@@ -9,6 +9,12 @@ namespace TicketsCinema.Area.Customer.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
+        //private readonly ILogger<HomeController> _logger;
+
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
         IMovieRepository movieRepository;
         ICategoryRepository categoryRepository;
         ICinemaRepository cinemaRepository;
@@ -23,18 +29,20 @@ namespace TicketsCinema.Area.Customer.Controllers
             this.actorMovieRepository = actorMovieRepository;
         }
 
-        //private readonly ILogger<HomeController> _logger;
 
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        public IActionResult Index()
+        public IActionResult Index(string movieName)
         {
+
             var movies = movieRepository.Get(includes: [e => e.Category, c => c.Cinema]);
+            if (movieName != null)
+            {
+                movies = movieRepository.Get(filter: e => e.Name.Contains(movieName), includes: [e => e.Category, c => c.Cinema]);
+            }
+            ViewBag.MovieName = movieName;
             return View(movies.ToList());
+
         }
+
         public IActionResult Details(int movieId)
         {
             var movieDetails = movieRepository.GetOne(

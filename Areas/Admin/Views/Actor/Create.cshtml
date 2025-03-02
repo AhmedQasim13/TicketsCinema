@@ -1,0 +1,64 @@
+﻿@model Actor
+
+<div class="container my-3">
+    <div class="row mb-3">
+        <div class="d-flex justify-content-between align-content-center">
+            <div class="display-6">
+                <a href="/Admin/Actor/Index">
+                    <i class="bi bi-arrow-left text-dark"></i>
+                    </a> 
+                Create New Actor
+                </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <form action="/Admin/Actor/Create" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <div>
+                    <label for="fname" class="form-label">Actor First Name</label>
+                    <input type="text" class="form-control" id="fname" name="FirstName" value="@Model.FirstName">
+                </div>
+                <div>
+                    <label for="lname" class="form-label">Actor Last Name</label>
+                    <input type="text" class="form-control" id="lname" name="LastName" value="@Model.LastName">
+                </div>
+                <div>
+                    <label for="description" class="form-label">Actor Bio</label>
+                    <input type="text" class="form-control" id="description" name="Bio" value="@Model.Bio">
+                </div>
+                <div>
+
+                    <label for="actorPic" class="form-label">Actor Picture </label>
+                    <input type="file" class="form-control" id="actorPic" name="file" accept="image/*">
+                    <div class="mt-2">
+                        <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 20%; display: none;" />
+                    </div>
+                </div>
+                <div>
+                    <label for="news" class="form-label">Actor News</label>
+                    <input type="text" class="form-control" id="news" name="News" value="@Model.News">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('Img').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('imagePreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    });
+</script>
