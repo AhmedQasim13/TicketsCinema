@@ -46,6 +46,26 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Cinemas</a>
                         </li>
+                    </ul>                    
+                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll d-flex flex-grow" style="--bs-scroll-height: 100px;">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Identity/Account/Profile">Welcome @User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Identity/Account/LogOut">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Identity/Account/Login">LogIn</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Identity/Account/Register">Register</a>
+                            </li>
+                        }
                     </ul>
                     <form href"/Customer/Home/Index" class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Text" name="movieName" value="@ViewBag.MovieName" aria-label="Search">

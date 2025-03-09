@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TicketsCinema.Models;
+using TicketsCinema.Models.ViewModel;
 
 namespace TicketsCinema.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -19,6 +21,8 @@ namespace TicketsCinema.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ActorMovie>().HasKey(e => new { e.ActorId, e.MovieId });
         }
+        public DbSet<TicketsCinema.Models.ViewModel.RegisterVM> RegisterVM { get; set; } = default!;
+        public DbSet<TicketsCinema.Models.ViewModel.LoginVM> LoginVM { get; set; } = default!;
 
     }
 }
